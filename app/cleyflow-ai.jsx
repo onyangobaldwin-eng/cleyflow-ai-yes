@@ -1203,17 +1203,6 @@ export default function CleyFlowAI() {
           })}
         </nav>
 
-        {/* Trial Box */}
-        <div style={{ padding: "14px 12px", borderTop: `1px solid ${colors.border}`, margin: "8px", borderRadius: 14, background: colors.bg }}>
-          <div style={{ color: colors.textMuted, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>Trial Status</div>
-          <div style={{ color: colors.text, fontSize: 13, fontWeight: 700, marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{demoConfig.clientName}</div>
-          <div style={{ color: colors.textMuted, fontSize: 11, marginBottom: 10 }}>{demoConfig.clientIndustry}</div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ color: colors.accent, fontSize: 13, fontWeight: 700 }}>Day {demoConfig.trialDay}</span>
-            <span style={{ color: colors.textMuted, fontSize: 11 }}>{demoConfig.currency} trial</span>
-          </div>
-        </div>
-
         {/* User */}
         <div style={{ padding: "12px 10px", borderTop: `1px solid ${colors.border}`, display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
           <Avatar initials={demoConfig.founderInitials} size={32} glow />
