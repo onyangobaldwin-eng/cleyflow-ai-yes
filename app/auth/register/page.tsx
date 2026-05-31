@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
-import { createClient } from "../../../lib/supabase/client";
+import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
+);
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "", business: "", industry: "" });
@@ -16,13 +21,19 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const supabase = createClient();
+
     const { error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
       options: { data: { full_name: form.name, business_name: form.business, industry: form.industry } },
     });
-    if (error) { setError(error.message); setLoading(false); return; }
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+      return;
+    }
+
     router.push("/dashboard");
   };
 
