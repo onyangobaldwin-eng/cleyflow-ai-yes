@@ -24,7 +24,7 @@ const colors = {
   textDim: "#3D4F6B",
 };
 
-const DEMO_CONFIG = {
+const APP_CONFIG = {
   clientName: "Dhe Luxury Suites",
   clientHandle: "dhe_luxury_suites",
   clientIndustry: "Short Stay Rental",
@@ -32,7 +32,6 @@ const DEMO_CONFIG = {
   clientEmail: "hello@dheluxurysuites.com",
   founderName: "Baldwin Cley",
   founderInitials: "BC",
-  trialDay: 1,
   currency: "KSh",
 };
 
@@ -169,7 +168,7 @@ const Card = ({ children, style = {}, glow }) => (
   </div>
 );
 
-const DemoSettingsPanel = ({ demoConfig, onChange, onReset, visible, onClose }) => {
+const SettingsPanel = ({ config, onChange, onReset, visible, onClose }) => {
   if (!visible) return null;
 
   return (
@@ -191,7 +190,7 @@ const DemoSettingsPanel = ({ demoConfig, onChange, onReset, visible, onClose }) 
         <div key={field} style={{ marginBottom: 12 }}>
           <label style={{ color: colors.textMuted, fontSize: 11, fontWeight: 700, display: "block", marginBottom: 6 }}>{label}</label>
           <input
-            value={demoConfig[field]}
+            value={config[field]}
             onChange={(e) => onChange(field, e.target.value)}
             style={{ width: "100%", background: colors.surface, border: `1px solid ${colors.border}`, borderRadius: 10, padding: "10px 12px", color: colors.text, fontSize: 13, outline: "none" }}
           />
@@ -201,7 +200,7 @@ const DemoSettingsPanel = ({ demoConfig, onChange, onReset, visible, onClose }) 
       <div style={{ marginBottom: 14 }}>
         <label style={{ color: colors.textMuted, fontSize: 11, fontWeight: 700, display: "block", marginBottom: 6 }}>Currency</label>
         <select
-          value={demoConfig.currency}
+          value={config.currency}
           onChange={(e) => onChange("currency", e.target.value)}
           style={{ width: "100%", background: colors.surface, border: `1px solid ${colors.border}`, borderRadius: 10, padding: "10px 12px", color: colors.text, fontSize: 13, outline: "none" }}
         >
@@ -220,7 +219,7 @@ const DemoSettingsPanel = ({ demoConfig, onChange, onReset, visible, onClose }) 
 // ─── PAGES ────────────────────────────────────────────────────────────────────
 
 // DASHBOARD
-const DashboardPage = ({ setPage, demoConfig }) => {
+const DashboardPage = ({ setPage, config }) => {
   const [time, setTime] = useState(new Date());
   const [userName, setUserName] = useState("there");
 
@@ -1095,7 +1094,7 @@ const AIToolsPage = () => {
 };
 
 // SETTINGS PAGE
-const SettingsPage = ({ demoConfig }) => {
+const SettingsPage = ({ config }) => {
   const integrations = [
     { name: "WhatsApp Business API", icon: "💬", color: "#25D366", status: "connected" },
     { name: "Instagram Graph API", icon: "📸", color: "#E1306C", status: "connected" },
@@ -1108,10 +1107,10 @@ const SettingsPage = ({ demoConfig }) => {
   ];
 
   const workspaceFields = [
-    ["Business Name", demoConfig.clientName],
-    ["Industry", demoConfig.clientIndustry],
-    ["Email", demoConfig.clientEmail],
-    ["Phone", demoConfig.clientPhone],
+    ["Business Name", config.clientName],
+    ["Industry", config.clientIndustry],
+    ["Email", config.clientEmail],
+    ["Phone", config.clientPhone],
   ];
 
   return (
@@ -1189,7 +1188,7 @@ export default function CleyFlowAI() {
 
   const [page, setPage] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [demoConfig, setDemoConfig] = useState({ ...DEMO_CONFIG });
+  const [config, setConfig] = useState({ ...APP_CONFIG });
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [userName, setUserName] = useState("there");
   const [userBusiness, setUserBusiness] = useState("");
@@ -1203,10 +1202,10 @@ export default function CleyFlowAI() {
 
   const pages = { dashboard: DashboardPage, inbox: InboxPage, leads: LeadsPage, crm: CRMPage, bookings: BookingsPage, campaigns: CampaignsPage, automation: AutomationPage, analytics: AnalyticsPage, "ai-tools": AIToolsPage, settings: SettingsPage };
   const PageComponent = pages[page] || DashboardPage;
-  const pageProps = { setPage, demoConfig };
+  const pageProps = { setPage, config };
 
-  const updateDemoConfig = (field, value) => setDemoConfig((prev) => ({ ...prev, [field]: value }));
-  const resetDemoConfig = () => setDemoConfig({ ...DEMO_CONFIG });
+  const updateConfig = (field, value) => setConfig((prev) => ({ ...prev, [field]: value }));
+  const resetConfig = () => setConfig({ ...APP_CONFIG });
 
   const SidebarContent = ({ overlay = false }) => (
     <div style={{ width: overlay ? 280 : sidebarOpen ? 220 : 64, position: overlay ? "fixed" : "static", left: overlay ? 0 : undefined, top: overlay ? 0 : undefined, height: overlay ? "100vh" : undefined, background: colors.surface, borderRight: `1px solid ${colors.border}`, display: "flex", flexDirection: "column", transition: "width 0.2s ease", flexShrink: 0, overflow: "hidden", zIndex: overlay ? 1300 : "auto" }}>
@@ -1240,9 +1239,9 @@ export default function CleyFlowAI() {
 
       {/* User */}
       <div style={{ padding: "12px 10px", borderTop: `1px solid ${colors.border}`, display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
-        <Avatar initials={demoConfig.founderInitials} size={32} glow />
+        <Avatar initials={config.founderInitials} size={32} glow />
         {sidebarOpen && <div style={{ overflow: "hidden" }}>
-          <div style={{ color: colors.text, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{demoConfig.founderName}</div>
+          <div style={{ color: colors.text, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{config.founderName}</div>
           <div style={{ color: colors.textMuted, fontSize: 10 }}>Admin</div>
         </div>}
       </div>
@@ -1304,11 +1303,11 @@ export default function CleyFlowAI() {
       </div>
 
       <div style={{ position: "fixed", right: 20, bottom: 20, zIndex: 1000, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 12 }}>
-        <DemoSettingsPanel
+        <SettingsPanel
           visible={settingsOpen}
-          demoConfig={demoConfig}
-          onChange={updateDemoConfig}
-          onReset={resetDemoConfig}
+          config={config}
+          onChange={updateConfig}
+          onReset={resetConfig}
           onClose={() => setSettingsOpen(false)}
         />
         <button onClick={() => setSettingsOpen((prev) => !prev)} style={{ width: 52, height: 52, borderRadius: "50%", background: `linear-gradient(135deg, ${colors.purple}, ${colors.accent})`, border: "none", color: "#000", fontSize: 24, fontWeight: 700, cursor: "pointer", boxShadow: "0 12px 30px rgba(0,0,0,0.35)" }}>⚙</button>
