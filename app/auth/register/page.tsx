@@ -37,6 +37,18 @@ export default function RegisterPage() {
     localStorage.setItem('cleyflow_name', form.name);
     localStorage.setItem('cleyflow_business', form.business);
 
+    const { data: { user: newUser } } = await supabase.auth.getUser();
+if (newUser) {
+  await supabase.from("workspaces").insert({
+    id: newUser.id,
+    name: form.business,
+    industry: form.industry,
+    email: form.email,
+  });
+}
+localStorage.setItem("cleyflow_name", form.name);
+localStorage.setItem("cleyflow_business", form.business);
+localStorage.setItem("cleyflow_industry", form.industry);
     router.push("/");
   };
 
