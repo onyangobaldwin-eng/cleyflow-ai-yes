@@ -176,7 +176,7 @@ const DemoSettingsPanel = ({ demoConfig, onChange, onReset, visible, onClose }) 
     <div style={{ position: "fixed", right: 20, bottom: 88, width: 320, maxWidth: "calc(100vw - 40px)", background: "#090F1B", border: `1px solid ${colors.purple}`, borderRadius: 18, boxShadow: "0 20px 50px rgba(0,0,0,0.45)", padding: 18, zIndex: 1000 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
         <div>
-          <div style={{ color: colors.text, fontWeight: 700, fontSize: 14 }}>Demo Settings</div>
+          <div style={{ color: colors.text, fontWeight: 700, fontSize: 14 }}>Settings</div>
           <div style={{ color: colors.textMuted, fontSize: 11 }}>Update config live across the app</div>
         </div>
         <button onClick={onClose} style={{ background: "none", border: "none", color: colors.textMuted, cursor: "pointer", fontSize: 18 }}>✕</button>
@@ -252,7 +252,7 @@ const DashboardPage = ({ setPage, demoConfig }) => {
       </div>
 
       {/* Stats Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 14, marginBottom: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(6, 1fr)", gap: 14, marginBottom: 24 }}>
         {mockStats.map((s, i) => (
           <Card key={i} style={{ padding: "18px 16px" }}>
             <div style={{ fontSize: 22, marginBottom: 8 }}>{s.icon}</div>
@@ -265,7 +265,7 @@ const DashboardPage = ({ setPage, demoConfig }) => {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 320px", gap: 20, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 320px", gap: 20, marginBottom: 20 }}>
         {/* Chart */}
         <Card style={{ padding: 24, gridColumn: "1/2" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
@@ -342,7 +342,7 @@ const DashboardPage = ({ setPage, demoConfig }) => {
       </div>
 
       {/* Bottom Row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20 }}>
         {/* Recent Bookings */}
         <Card style={{ padding: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
@@ -835,7 +835,7 @@ const CampaignsPage = () => {
       {creating && (
         <Card style={{ padding: 20, marginBottom: 20 }}>
           <h3 style={{ color: colors.text, margin: "0 0 16px", fontSize: 14, fontWeight: 600 }}>✦ Campaign Builder</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, marginBottom: 14 }}>
             <div>
               <label style={{ color: colors.textMuted, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", display: "block", marginBottom: 6 }}>CAMPAIGN NAME</label>
               <input defaultValue="Black Friday Special" style={{ width: "100%", background: colors.bg, border: `1px solid ${colors.border}`, borderRadius: 8, padding: "9px 12px", color: colors.text, fontSize: 13, outline: "none", boxSizing: "border-box" }} />
@@ -919,7 +919,7 @@ const AutomationPage = () => {
         <button style={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.purple})`, color: "#000", border: "none", borderRadius: 8, padding: "9px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>+ Create Flow</button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(4, 1fr)", gap: 14, marginBottom: 24 }}>
         {[{ label: "Active Flows", val: "4", color: colors.green }, { label: "Runs Today", val: "128", color: colors.accent }, { label: "Total Automated", val: "1,638", color: colors.purple }, { label: "Recovered Leads", val: "156", color: colors.amber }].map((s, i) => (
           <Card key={i} style={{ padding: 18 }}>
             <div style={{ fontSize: 22, fontWeight: 700, color: s.color }}>{s.val}</div>
@@ -972,7 +972,7 @@ const AnalyticsPage = () => {
         <p style={{ color: colors.textMuted, margin: "4px 0 0", fontSize: 13 }}>Performance overview — November 2024</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20, marginBottom: 20 }}>
         {[{ title: "Leads Over Time", data: weekly, color: colors.accent, label: "Leads", unit: "" }, { title: "Conversion Rate (%)", data: convData, color: colors.green, label: "Rate", unit: "%" }].map((chart, ci) => (
           <Card key={ci} style={{ padding: 24 }}>
             <h3 style={{ color: colors.text, margin: "0 0 20px", fontSize: 14, fontWeight: 600 }}>{chart.title}</h3>
@@ -992,7 +992,7 @@ const AnalyticsPage = () => {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 20 }}>
         {[
           { title: "Top Performing Channels", items: [["WhatsApp", 39, colors.accent], ["Instagram", 24, colors.purple], ["Email", 17, colors.amber], ["Facebook", 14, "#1877F2"], ["LiveChat", 6, colors.green]] },
           { title: "Response Time Distribution", items: [["< 5 min", 54, colors.green], ["5–15 min", 27, colors.amber], ["15–60 min", 13, colors.red], ["> 1 hour", 6, colors.textMuted]] },
@@ -1038,7 +1038,7 @@ const AIToolsPage = () => {
     email: "Subject: 🔥 Your Exclusive November Deal — Act Before Midnight!\n\nHi {{first_name}},\n\nWe noticed you were interested in our services — and we don't want you to miss out.\n\nThis week only, we're offering 20% OFF all bookings. Whether you're looking for accommodation, transport, or a wellness appointment — now is the best time.\n\n🎯 Offer expires: Sunday 11:59PM\n✅ No hidden charges\n💳 M-Pesa accepted\n\nBook here: [LINK]\n\nTalk soon,\nThe Team",
     whatsapp: "Hey {{name}} 👋\n\nJust a quick one — our *November Special* is still running!\n\n🏠 Apartments from KES 5,000/night\n🚗 Car hire from KES 3,500/day\n💆 Salon packages from KES 1,500\n\nBook now before slots fill up ⚡\nReply *BOOK* or tap the link below:\n👉 [LINK]",
     caption: "The kind of stay that makes you never want to leave 🌆✨\n\nWake up to city views, premium amenities, and the comfort of home — all in the heart of Nairobi.\n\nApartments available from KES 5,000/night 🔑\n\nDM us to book or tap the link in bio 👆\n\n#NairobiAirbnb #NairobiStays #KenyanHospitality #ExploreNairobi #NairobiLiving",
-    sales: "Stop losing customers to slow responses.\n\nCleyFlow AI responds to every inquiry in under 60 seconds — 24/7 — across WhatsApp, Instagram, Email, and more.\n\nBusinesses using CleyFlow report:\n✅ 3x faster response time\n✅ 40% more bookings converted\n✅ KES 200K+ in recovered abandoned inquiries\n\nStart your free trial today → [LINK]",
+    sales: "Stop losing customers to slow responses.\n\nCleyFlow AI responds to every inquiry in under 60 seconds — 24/7 — across WhatsApp, Instagram, Email, and more.\n\nBusinesses using CleyFlow report:\n✅ 3x faster response time\n✅ 40% more bookings converted\n✅ KES 200K+ in recovered abandoned inquiries\n\nStart today → [LINK]",
   };
 
   const generate = async () => {
@@ -1122,7 +1122,7 @@ const SettingsPage = ({ demoConfig }) => {
         {/* Profile */}
         <Card style={{ padding: 24 }}>
           <h3 style={{ color: colors.text, margin: "0 0 16px", fontSize: 14, fontWeight: 600 }}>Workspace</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
             {workspaceFields.map(([label, val]) => (
               <div key={label}>
                 <label style={{ color: colors.textMuted, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", display: "block", marginBottom: 6 }}>{label.toUpperCase()}</label>
@@ -1136,7 +1136,7 @@ const SettingsPage = ({ demoConfig }) => {
         {/* Integrations */}
         <Card style={{ padding: 24 }}>
           <h3 style={{ color: colors.text, margin: "0 0 16px", fontSize: 14, fontWeight: 600 }}>API Integrations</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
             {integrations.map((int, i) => {
               const sc = { connected: { color: colors.green, bg: colors.greenDim, label: "Connected" }, pending: { color: colors.amber, bg: colors.amberDim, label: "Pending" }, disconnected: { color: colors.textMuted, bg: colors.bg, label: "Connect" } };
               const s = sc[int.status];
@@ -1156,7 +1156,7 @@ const SettingsPage = ({ demoConfig }) => {
         {/* Billing */}
         <Card style={{ padding: 24 }}>
           <h3 style={{ color: colors.text, margin: "0 0 16px", fontSize: 14, fontWeight: 600 }}>Subscription</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 14 }}>
             {[
               { plan: "Starter", price: "KES 2,500", features: ["1 Inbox", "500 contacts", "Basic AI", "Email support"], current: false },
               { plan: "Growth", price: "KES 7,500", features: ["5 Inboxes", "5,000 contacts", "Full AI suite", "Priority support"], current: true },
@@ -1179,6 +1179,14 @@ const SettingsPage = ({ demoConfig }) => {
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function CleyFlowAI() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(typeof window !== "undefined" && window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const [page, setPage] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [demoConfig, setDemoConfig] = useState({ ...DEMO_CONFIG });
@@ -1200,6 +1208,47 @@ export default function CleyFlowAI() {
   const updateDemoConfig = (field, value) => setDemoConfig((prev) => ({ ...prev, [field]: value }));
   const resetDemoConfig = () => setDemoConfig({ ...DEMO_CONFIG });
 
+  const SidebarContent = ({ overlay = false }) => (
+    <div style={{ width: overlay ? 280 : sidebarOpen ? 220 : 64, position: overlay ? "fixed" : "static", left: overlay ? 0 : undefined, top: overlay ? 0 : undefined, height: overlay ? "100vh" : undefined, background: colors.surface, borderRight: `1px solid ${colors.border}`, display: "flex", flexDirection: "column", transition: "width 0.2s ease", flexShrink: 0, overflow: "hidden", zIndex: overlay ? 1300 : "auto" }}>
+      {/* Logo */}
+      <div style={{ padding: "20px 16px 16px", borderBottom: `1px solid ${colors.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${colors.accent}, ${colors.purple})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 900, color: "#000", flexShrink: 0 }}>C</div>
+          {!isMobile && sidebarOpen && <div style={{ overflow: "hidden" }}>
+            <div style={{ color: colors.text, fontWeight: 800, fontSize: 15, letterSpacing: "-0.3px", whiteSpace: "nowrap" }}>CleyFlow<span style={{ color: colors.accent }}> AI</span></div>
+          </div>}
+        </div>
+        <button onClick={() => setSidebarOpen(v => !v)} style={{ background: "none", border: "none", color: colors.textMuted, cursor: "pointer", fontSize: 16, padding: 0, flexShrink: 0 }}>{sidebarOpen ? "◂" : "▸"}</button>
+      </div>
+
+      {/* Nav */}
+      <nav style={{ flex: 1, overflowY: "auto", padding: "10px 8px" }}>
+        {navItems.map(item => {
+          const active = page === item.id;
+          return (
+            <button key={item.id} onClick={() => setPage(item.id)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", borderRadius: 8, border: "none", cursor: "pointer", marginBottom: 2, background: active ? colors.accentDim : "transparent", color: active ? colors.accent : colors.textMuted, textAlign: "left", position: "relative", whiteSpace: "nowrap", overflow: "hidden" }}>
+              <span style={{ fontSize: 16, flexShrink: 0, width: 20, textAlign: "center" }}>{item.icon}</span>
+              {sidebarOpen && <span style={{ fontSize: 13, fontWeight: active ? 700 : 400 }}>{item.label}</span>}
+              {item.badge && sidebarOpen && (
+                <span style={{ marginLeft: "auto", background: colors.accent, color: "#000", borderRadius: 10, padding: "1px 6px", fontSize: 9, fontWeight: 800 }}>{item.badge}</span>
+              )}
+              {active && <div style={{ position: "absolute", right: 0, top: 4, bottom: 4, width: 3, background: colors.accent, borderRadius: "3px 0 0 3px" }} />}
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* User */}
+      <div style={{ padding: "12px 10px", borderTop: `1px solid ${colors.border}`, display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
+        <Avatar initials={demoConfig.founderInitials} size={32} glow />
+        {sidebarOpen && <div style={{ overflow: "hidden" }}>
+          <div style={{ color: colors.text, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{demoConfig.founderName}</div>
+          <div style={{ color: colors.textMuted, fontSize: 10 }}>Admin</div>
+        </div>}
+      </div>
+    </div>
+  );
+
   return (
     <div style={{ display: "flex", height: "100vh", background: colors.bg, fontFamily: "'DM Sans', 'Inter', system-ui, sans-serif", overflow: "hidden" }}>
       <style>{`
@@ -1215,50 +1264,21 @@ export default function CleyFlowAI() {
       `}</style>
 
       {/* Sidebar */}
-      <div style={{ width: sidebarOpen ? 220 : 64, background: colors.surface, borderRight: `1px solid ${colors.border}`, display: "flex", flexDirection: "column", transition: "width 0.2s ease", flexShrink: 0, overflow: "hidden" }}>
-        {/* Logo */}
-        <div style={{ padding: "20px 16px 16px", borderBottom: `1px solid ${colors.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${colors.accent}, ${colors.purple})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 900, color: "#000", flexShrink: 0 }}>C</div>
-            {sidebarOpen && <div style={{ overflow: "hidden" }}>
-              <div style={{ color: colors.text, fontWeight: 800, fontSize: 15, letterSpacing: "-0.3px", whiteSpace: "nowrap" }}>CleyFlow<span style={{ color: colors.accent }}> AI</span></div>
-            </div>}
-          </div>
-          <button onClick={() => setSidebarOpen(v => !v)} style={{ background: "none", border: "none", color: colors.textMuted, cursor: "pointer", fontSize: 16, padding: 0, flexShrink: 0 }}>{sidebarOpen ? "◂" : "▸"}</button>
-        </div>
-
-        {/* Nav */}
-        <nav style={{ flex: 1, overflowY: "auto", padding: "10px 8px" }}>
-          {navItems.map(item => {
-            const active = page === item.id;
-            return (
-              <button key={item.id} onClick={() => setPage(item.id)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", borderRadius: 8, border: "none", cursor: "pointer", marginBottom: 2, background: active ? colors.accentDim : "transparent", color: active ? colors.accent : colors.textMuted, textAlign: "left", position: "relative", whiteSpace: "nowrap", overflow: "hidden" }}>
-                <span style={{ fontSize: 16, flexShrink: 0, width: 20, textAlign: "center" }}>{item.icon}</span>
-                {sidebarOpen && <span style={{ fontSize: 13, fontWeight: active ? 700 : 400 }}>{item.label}</span>}
-                {item.badge && sidebarOpen && (
-                  <span style={{ marginLeft: "auto", background: colors.accent, color: "#000", borderRadius: 10, padding: "1px 6px", fontSize: 9, fontWeight: 800 }}>{item.badge}</span>
-                )}
-                {active && <div style={{ position: "absolute", right: 0, top: 4, bottom: 4, width: 3, background: colors.accent, borderRadius: "3px 0 0 3px" }} />}
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* User */}
-        <div style={{ padding: "12px 10px", borderTop: `1px solid ${colors.border}`, display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
-          <Avatar initials={demoConfig.founderInitials} size={32} glow />
-          {sidebarOpen && <div style={{ overflow: "hidden" }}>
-            <div style={{ color: colors.text, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{demoConfig.founderName}</div>
-            <div style={{ color: colors.textMuted, fontSize: 10 }}>Admin</div>
-          </div>}
-        </div>
-      </div>
+      {!isMobile ? (
+        <SidebarContent />
+      ) : (
+        <>
+          <button onClick={() => setSidebarOpen(true)} style={{ position: "fixed", left: 12, top: 12, zIndex: 1400, background: `linear-gradient(135deg, ${colors.accent}, ${colors.purple})`, color: "#000", border: "none", width: 44, height: 44, borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>☰</button>
+          {sidebarOpen && <SidebarContent overlay={true} />}
+        </>
+      )}
 
       {/* Main */}
       <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }}>
         {/* Top Bar */}
         <div style={{ height: 52, borderBottom: `1px solid ${colors.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px", background: `${colors.surface}CC`, backdropFilter: "blur(8px)", position: "sticky", top: 0, zIndex: 10 }}>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            {isMobile && <button onClick={() => setSidebarOpen(v => !v)} style={{ background: "none", border: "none", color: colors.text, fontSize: 20, padding: 6, marginRight: 6, cursor: "pointer" }}>☰</button>}
             {navItems.find(n => n.id === page) && (
               <>
                 <span style={{ color: colors.textDim, fontSize: 13 }}>CleyFlow</span>
