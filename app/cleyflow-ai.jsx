@@ -227,8 +227,14 @@ const DemoSettingsPanel = ({ demoConfig, onChange, onReset, visible, onClose }) 
 // DASHBOARD
 const DashboardPage = ({ setPage, demoConfig }) => {
   const [time, setTime] = useState(new Date());
-  useEffect(() => { const t = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(t); }, []);
-  const founderFirstName = getShortName(demoConfig.founderName);
+  const [userName, setUserName] = useState("there");
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) setUserName(storedName);
+    const t = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
 
   const chartData = [38, 52, 45, 67, 58, 72, 89, 76, 94, 88, 102, 115];
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -242,7 +248,7 @@ const DashboardPage = ({ setPage, demoConfig }) => {
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: colors.green, boxShadow: `0 0 8px ${colors.green}` }} />
             <span style={{ color: colors.textMuted, fontSize: 12 }}>Live · {time.toLocaleTimeString()}</span>
           </div>
-          <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.text, margin: 0, letterSpacing: "-0.5px" }}>Good morning, {founderFirstName} 👋</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.text, margin: 0, letterSpacing: "-0.5px" }}>Good morning, {userName} 👋</h1>
           <p style={{ color: colors.textMuted, marginTop: 4, fontSize: 14 }}>Here's what's happening across your business today.</p>
         </div>
         <button onClick={() => setPage("ai-tools")} style={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.purple})`, color: "#000", border: "none", borderRadius: 8, padding: "10px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
@@ -1151,6 +1157,15 @@ export default function CleyFlowAI() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [demoConfig, setDemoConfig] = useState({ ...DEMO_CONFIG });
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [userName, setUserName] = useState("there");
+  const [userBusiness, setUserBusiness] = useState("");
+
+  useEffect(() => {
+    const name = localStorage.getItem("cleyflow_name") || "there";
+    const business = localStorage.getItem("cleyflow_business") || "";
+    setUserName(name);
+    setUserBusiness(business);
+  }, []);
 
   const pages = { dashboard: DashboardPage, inbox: InboxPage, leads: LeadsPage, crm: CRMPage, bookings: BookingsPage, campaigns: CampaignsPage, automation: AutomationPage, analytics: AnalyticsPage, "ai-tools": AIToolsPage, settings: SettingsPage };
   const PageComponent = pages[page] || DashboardPage;

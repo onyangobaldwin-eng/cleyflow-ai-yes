@@ -34,6 +34,9 @@ export default function RegisterPage() {
       return;
     }
 
+    localStorage.setItem('cleyflow_name', form.name);
+    localStorage.setItem('cleyflow_business', form.business);
+
     router.push("/");
   };
 
