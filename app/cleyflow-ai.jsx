@@ -219,7 +219,15 @@ const SettingsPanel = ({ config, onChange, onReset, visible, onClose }) => {
 // ─── PAGES ────────────────────────────────────────────────────────────────────
 
 // DASHBOARD
-const DashboardPage = ({ setPage, config }) => {
+const DashboardPage = ({
+ setPage, config }) => {
+  const [isMobile, setIsMobile] = useState(false);
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+  check();
+  window.addEventListener('resize', check);
+  return () => window.removeEventListener('resize', check);
+}, []);
   const [time, setTime] = useState(new Date());
   const [userName, setUserName] = useState("there");
 
@@ -900,6 +908,13 @@ const CampaignsPage = () => {
 
 // AUTOMATION PAGE
 const AutomationPage = () => {
+  const [isMobile, setIsMobile] = useState(false);
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+  check();
+  window.addEventListener('resize', check);
+  return () => window.removeEventListener('resize', check);
+}, []);
   const flows = [
     { name: "Lead Capture → WhatsApp Welcome", trigger: "New Lead", steps: 3, active: true, runs: 847 },
     { name: "No-Reply 24hr Follow-up", trigger: "Silence > 24hrs", steps: 5, active: true, runs: 312 },
@@ -961,6 +976,13 @@ const AutomationPage = () => {
 
 // ANALYTICS PAGE
 const AnalyticsPage = () => {
+  const [isMobile, setIsMobile] = useState(false);
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+  check();
+  window.addEventListener('resize', check);
+  return () => window.removeEventListener('resize', check);
+}, []);
   const weekly = [45, 62, 58, 74, 68, 91, 85, 102, 96, 118, 110, 134];
   const convData = [18, 22, 19, 25, 23, 28, 31, 27, 33, 29, 35, 38];
 
@@ -1095,6 +1117,13 @@ const AIToolsPage = () => {
 
 // SETTINGS PAGE
 const SettingsPage = ({ config }) => {
+  const [isMobile, setIsMobile] = useState(false);
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+  check();
+  window.addEventListener('resize', check);
+  return () => window.removeEventListener('resize', check);
+}, []);
   const integrations = [
     { name: "WhatsApp Business API", icon: "💬", color: "#25D366", status: "connected" },
     { name: "Instagram Graph API", icon: "📸", color: "#E1306C", status: "connected" },
