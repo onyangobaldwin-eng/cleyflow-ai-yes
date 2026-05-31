@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createClient } from "@supabase/supabase-js";
 
 // ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
 const colors = {
@@ -69,13 +70,7 @@ const mockStats = [
   { label: "Revenue MTD", value: "KES 2.4M", change: "+29%", up: true, icon: "💰" },
 ];
 
-const mockContacts = [
-  { id: 1, name: "Sarah Kimani", email: "sarah.k@gmail.com", phone: "+254 712 345 678", status: "hot", tags: ["airbnb", "high-value"], bookings: 3, lastSeen: "Today", avatar: "SK" },
-  { id: 2, name: "James Odhiambo", email: "james.o@outlook.com", phone: "+254 723 456 789", status: "warm", tags: ["salon", "returning"], bookings: 7, lastSeen: "Yesterday", avatar: "JO" },
-  { id: 3, name: "Aisha Mohamed", email: "aisha.m@gmail.com", phone: "+254 734 567 890", status: "hot", tags: ["car-rental", "fleet"], bookings: 12, lastSeen: "2h ago", avatar: "AM" },
-  { id: 4, name: "David Njoroge", email: "david.n@corp.co.ke", phone: "+254 745 678 901", status: "hot", tags: ["hotel", "vip"], bookings: 5, lastSeen: "Today", avatar: "DN" },
-  { id: 5, name: "Grace Muthoni", email: "grace.m@yahoo.com", phone: "+254 756 789 012", status: "warm", tags: ["clinic"], bookings: 2, lastSeen: "3h ago", avatar: "GM" },
-];
+const mockContacts = [];
 
 const mockBookings = [
   { id: 1, client: "Sarah Kimani", service: "Kilimani 2BR Apartment", date: "Dec 15-22", time: "Check-in 2PM", status: "confirmed", amount: "KES 52,500", avatar: "SK" },
@@ -638,8 +633,35 @@ const LeadsPage = () => {
 const CRMPage = () => {
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
+  const [contacts, setContacts] = useState([]);
+  const [loadingContacts, setLoadingContacts] = useState(true);
 
-  const filtered = mockContacts.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
+  useEffect(() => {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
+    );
+    let mounted = true;
+
+    const fetchContacts = async () => {
+      setLoadingContacts(true);
+      try {
+        const { data, error } = await supabase.from("contacts").select("*");
+        if (!mounted) return;
+        setContacts(data || []);
+      } catch (e) {
+        if (!mounted) return;
+        setContacts([]);
+      } finally {
+        if (mounted) setLoadingContacts(false);
+      }
+    };
+
+    fetchContacts();
+    return () => { mounted = false; };
+  }, []);
+
+  const filtered = contacts.filter(c => (c.name || "").toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div style={{ padding: "24px 28px", display: "flex", gap: 20, height: "calc(100vh - 60px)", overflow: "hidden" }}>
@@ -647,7 +669,7 @@ const CRMPage = () => {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <div>
             <h2 style={{ color: colors.text, margin: 0, fontSize: 22, fontWeight: 700 }}>CRM</h2>
-            <p style={{ color: colors.textMuted, margin: "4px 0 0", fontSize: 13 }}>{mockContacts.length} contacts · Click to view profile</p>
+            <p style={{ color: colors.textMuted, margin: "4px 0 0", fontSize: 13 }}>{contacts.length} contacts · Click to view profile</p>
           </div>
           <button style={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.purple})`, color: "#000", border: "none", borderRadius: 8, padding: "9px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>+ Add Contact</button>
         </div>
@@ -655,37 +677,41 @@ const CRMPage = () => {
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search contacts..." style={{ background: "none", border: "none", color: colors.text, fontSize: 13, outline: "none", flex: 1 }} />
         </div>
         <Card style={{ flex: 1, overflow: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead style={{ position: "sticky", top: 0, background: colors.surface }}>
-              <tr style={{ borderBottom: `1px solid ${colors.border}` }}>
-                {["Contact","Email","Phone","Status","Tags","Bookings","Last Seen"].map(h => (
-                  <th key={h} style={{ padding: "12px 16px", textAlign: "left", color: colors.textMuted, fontSize: 11, fontWeight: 700, letterSpacing: "0.05em", whiteSpace: "nowrap" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c, i) => (
-                <tr key={c.id} onClick={() => setSelected(c)} style={{ borderBottom: `1px solid ${colors.border}`, cursor: "pointer", background: selected?.id === c.id ? colors.accentDim : "transparent" }}>
-                  <td style={{ padding: "12px 16px" }}>
-                    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                      <Avatar initials={c.avatar} size={32} />
-                      <span style={{ color: colors.text, fontSize: 13, fontWeight: 600 }}>{c.name}</span>
-                    </div>
-                  </td>
-                  <td style={{ padding: "12px 16px", color: colors.textMuted, fontSize: 12 }}>{c.email}</td>
-                  <td style={{ padding: "12px 16px", color: colors.textMuted, fontSize: 12 }}>{c.phone}</td>
-                  <td style={{ padding: "12px 16px" }}><Badge status={c.status} /></td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                      {c.tags.map(t => <span key={t} style={{ fontSize: 10, color: colors.accent, background: colors.accentDim, border: `1px solid ${colors.accent}33`, borderRadius: 4, padding: "1px 5px" }}>#{t}</span>)}
-                    </div>
-                  </td>
-                  <td style={{ padding: "12px 16px", color: colors.text, fontSize: 12, fontWeight: 600 }}>{c.bookings}</td>
-                  <td style={{ padding: "12px 16px", color: colors.textMuted, fontSize: 12 }}>{c.lastSeen}</td>
+          {loadingContacts ? (
+            <div style={{ padding: 40, textAlign: "center", color: colors.textMuted }}>Loading contacts...</div>
+          ) : (
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead style={{ position: "sticky", top: 0, background: colors.surface }}>
+                <tr style={{ borderBottom: `1px solid ${colors.border}` }}>
+                  {["Contact","Email","Phone","Status","Tags","Bookings","Last Seen"].map(h => (
+                    <th key={h} style={{ padding: "12px 16px", textAlign: "left", color: colors.textMuted, fontSize: 11, fontWeight: 700, letterSpacing: "0.05em", whiteSpace: "nowrap" }}>{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map((c, i) => (
+                  <tr key={c.id} onClick={() => setSelected(c)} style={{ borderBottom: `1px solid ${colors.border}`, cursor: "pointer", background: selected?.id === c.id ? colors.accentDim : "transparent" }}>
+                    <td style={{ padding: "12px 16px" }}>
+                      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                        <Avatar initials={c.avatar} size={32} />
+                        <span style={{ color: colors.text, fontSize: 13, fontWeight: 600 }}>{c.name}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: "12px 16px", color: colors.textMuted, fontSize: 12 }}>{c.email}</td>
+                    <td style={{ padding: "12px 16px", color: colors.textMuted, fontSize: 12 }}>{c.phone}</td>
+                    <td style={{ padding: "12px 16px" }}><Badge status={c.status} /></td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                        {c.tags.map(t => <span key={t} style={{ fontSize: 10, color: colors.accent, background: colors.accentDim, border: `1px solid ${colors.accent}33`, borderRadius: 4, padding: "1px 5px" }}>#{t}</span>)}
+                      </div>
+                    </td>
+                    <td style={{ padding: "12px 16px", color: colors.text, fontSize: 12, fontWeight: 600 }}>{c.bookings}</td>
+                    <td style={{ padding: "12px 16px", color: colors.textMuted, fontSize: 12 }}>{c.lastSeen}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </Card>
       </div>
 
